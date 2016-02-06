@@ -12,6 +12,11 @@ public static class SaveLoad{
 
 	public static void Save(){
 	
+		if (list.savedGames.Exists (x => x.currentProfile.profileName == Game.current.currentProfile.profileName) == true) {
+
+			list.savedGames.RemoveAt(list.savedGames.FindIndex(x => x.currentProfile.profileName == Game.current.currentProfile.profileName));
+
+		}
 		list.savedGames.Add (Game.current);
 		BinaryFormatter bf = new BinaryFormatter ();
 		FileStream file = File.Create (Application.persistentDataPath + "/" + fileName);
@@ -44,6 +49,18 @@ public static class SaveLoad{
 	
 	}
 
+	public static void DeleteGame(string name){
+	
+		list.savedGames.RemoveAt(list.savedGames.FindIndex(x => x.currentProfile.profileName == name));
+		BinaryFormatter bf = new BinaryFormatter ();
+		FileStream file = File.Create (Application.persistentDataPath + "/" + fileName);
+		bf.Serialize (file, SaveLoad.list);
+		file.Close ();
+		
+		Debug.Log ("save" + Application.persistentDataPath);
 
+
+	
+	}
 
 }
